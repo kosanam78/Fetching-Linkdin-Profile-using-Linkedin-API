@@ -1,0 +1,40 @@
+#create another class file also , to take the details from the API and add into the JSON file.
+#make sure follow the steps mentioned in the below syntax everything is clearly mentioned below.
+
+Syntax:-
+
+import json
+import requests
+from requests_oauthlib import OAuth2Session
+
+# Replace these with your LinkedIn credentials
+client_id = 'YOUR_CLIENT_ID'
+client_secret = 'YOUR_CLIENT_SECRET'
+redirect_uri = 'YOUR_REDIRECT_URI'
+
+# Step 1: Get authorization
+authorization_base_url = 'https://www.linkedin.com/oauth/v2/authorization'
+token_url = 'https://www.linkedin.com/oauth/v2/accessToken'
+scope = ['r_liteprofile']
+
+linkedin = OAuth2Session(client_id, redirect_uri=redirect_uri, scope=scope)
+
+# Redirect user to LinkedIn for authorization
+authorization_url, state = linkedin.authorization_url(authorization_base_url)
+print(f'Please go to {authorization_url} and authorize access.')
+
+# After authorization, the user is redirected back to your redirect_uri
+# with a code in the URL. You can use that to fetch the token.
+redirect_response = input('Paste the full redirect URL here: ')
+linkedin.fetch_token(token_url, authorization_response=redirect_response,
+                     client_secret=client_secret)
+
+# Step 2: Fetch profile data
+profile_url = 'https://api.linkedin.com/v2/me'
+profile_data = linkedin.get(profile_url).json()
+
+# Step 3: Save profile data to a JSON file
+with open('linkedin_profile.json', 'w') as f:
+    json.dump(profile_data, f, indent=4)
+
+print("Profile data saved to linkedin_profile.json")
