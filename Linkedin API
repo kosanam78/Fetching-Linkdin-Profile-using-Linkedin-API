@@ -1,0 +1,5 @@
+#first, you need to register your app with LinkedIn and get API keys.
+#use OAuth 2.0 for user authentication.
+#make API requests to LinkedIn’s people endpoint to get the profile data.
+#make sure all details and clientid and secret token note on it.
+
